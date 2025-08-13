@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azaadi Offer - Free SIM Data</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+        
+        :root {
+            --green: #006400;
+            --white: #ffffff;
+            --light: #f5f5f5;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Ad Slots */
+        .ad-slot {
+            width: 100%;
+            height: 90px;
+            background-color: #eee;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed #999;
+        }
+        
+        /* Share Screen */
+        #shareScreen {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        #shareScreen h1 {
+            color: var(--green);
+            margin-bottom: 20px;
+        }
+        
+        #shareScreen p {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .share-btn {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .countdown {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            color: var(--green);
+            font-weight: bold;
+        }
+        
+        /* Main Offer Screen */
+        #offerScreen {
+            display: none;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 10px 0;
+        }
+        
+        h1 {
+            color: var(--green);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .offer-box {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid var(--green);
+            margin-bottom: 15px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        input[type="tel"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .options {
+            margin: 20px 0;
+        }
+        
+        .option {
+            border: 2px solid var(--green);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        
+        .option.selected {
+            background-color: rgba(0, 100, 0, 0.1);
+        }
+        
+        .option h3 {
+            margin: 0 0 5px 0;
+            color: var(--green);
+        }
+        
+        .btn {
+            background-color: var(--green);
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            animation: slideUp 0.4s;
+            position: relative;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); }
+            to { transform: translateY(0); }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .captcha-container {
+            margin: 20px 0;
+        }
+        
+        .captcha-text {
+            font-size: 24px;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, #999, #333);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+            transform: skew(-5deg) rotate(1deg);
+            display: inline-block;
+            padding: 10px 20px;
+            border: 1px dashed #ccc;
+            user-select: none;
+        }
+        
+        .captcha-input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .firework {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px var(--green);
+            animation: firework 1s ease-out forwards;
+            opacity: 0;
+            z-index: 100;
+            pointer-events: none;
+        }
+        
+        @keyframes firework {
+            0% {
+                transform: translate(var(--x), var(--y));
+                width: 5px;
+                height: 5px;
+                opacity: 1;
+            }
+            100% {
+                width: 150px;
+                height: 150px;
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 500px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .ad-slot {
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Ad Slot -->
+    <div class="ad-slot">
+        <p><script type="text/javascript">
+	atOptions = {
+		'key' : 'e8ae9edc318023371064c7b12908184a',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//yapabbreviate.com/e8ae9edc318023371064c7b12908184a/invoke.js"></script></p>
+    </div>
+    
+    <div class="container">
+        <!-- Share Screen (First Screen) -->
+        <div id="shareScreen">
+            <h1>🎉 Azaadi Offer - Free SIM Data</h1>
+            <p>Free data hasil karne ke liye, apne 5 doston ko ye offer share karein!</p>
+            
+            <button class="share-btn" onclick="shareOnWhatsApp()">
+                <i class="fab fa-whatsapp"></i> Share on WhatsApp
+            </button>
+            
+            <div class="countdown" id="countdown" style="display: none;">
+                Offer screen in: <span id="countdownNumber">10</span> seconds
+            </div>
+        </div>
+        
+        <!-- Main Offer Screen (Hidden Initially) -->
+        <div id="offerScreen">
+            <header>
+                <h1>🎉 Azaadi Offer - Free SIM Data</h1>
+                <p>Celebrate Independence Day with free data!</p>
+            </header>
+            
+            <div class="offer-box">
+                <div class="input-group">
+                    <label for="phone">Enter your mobile number:</label>
+                    <input type="tel" id="phone" placeholder="03001234567">
+                </div>
+                
+                <div class="options">
+                    <div class="option" onclick="selectOffer(this)">
+                        <h3>100GB Free Data</h3>
+                        <p>03 Months validity</p>
+                    </div>
+                    
+                    <div class="option" onclick="selectOffer(this)">
+                        <h3>5GB Data + 100 SMS</h3>
+                        <p>30 days validity</p>
+                    </div>
+                    
+                    <div class="option" onclick="selectOffer(this)">
+                        <h3>2GB Data + 500 Minutes</h3>
+                        <p>30 days validity</p>
+                    </div>
+                </div>
+                
+                <button class="btn" onclick="showCaptchaModal()">Get Free Offer</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Ad Slot -->
+    <div class="ad-slot">
+        <p><script type="text/javascript">
+	atOptions = {
+		'key' : 'e8ae9edc318023371064c7b12908184a',
+		'format' : 'iframe',
+		'height' : 90,
+		'width' : 728,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//yapabbreviate.com/e8ae9edc318023371064c7b12908184a/invoke.js"></script></p>
+    </div>
+    
+    <!-- CAPTCHA Modal -->
+    <div class="modal" id="captchaModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('captchaModal')">&times;</button>
+            <h3>Verify You're Human</h3>
+            <p>Please enter the text below:</p>
+            
+            <div class="captcha-container">
+                <div class="captcha-text" id="captchaText">A7B9C3</div>
+                <input type="text" class="captcha-input" id="captchaInput" placeholder="Enter the text">
+            </div>
+            
+            <button class="btn" onclick="verifyCaptcha()">Verify</button>
+            <button class="btn" style="background: #666; margin-top: 10px;" onclick="refreshCaptcha()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('successModal')">&times;</button>
+            <h3 style="color: var(--green);">✅ Mubarak Ho!</h3>
+            <p>Aap is offer ke liye eligible hain!</p>
+            <p>Jald hi aap ki SIM pe offer active kar di jayegi.</p>
+            <div style="margin-top: 20px; padding: 10px; background-color: rgba(0,100,0,0.1); border-radius: 5px;">
+                <p style="font-weight: bold;">Reference #: PAK<span id="refNumber">20251408</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- WhatsApp Float Button -->
+    <a href="https://whatsapp.com/channel/0029VbBMcgRGU3BCtQExnw29" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    
+    <script>
+        // Select offer
+        function selectOffer(element) {
+            // Remove selected class from all options
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+        }
+        
+        // Generate random CAPTCHA text
+        function generateCaptcha() {
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+            let captcha = "";
+            for(let i = 0; i < 6; i++) {
+                captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('captchaText').textContent = captcha;
+            return captcha;
+        }
+        
+        // Show modal
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Show CAPTCHA modal
+        function showCaptchaModal() {
+            const phone = document.getElementById('phone').value;
+            const selected = document.querySelector('.option.selected');
+            
+            // Simple validation
+            if (!phone || phone.length < 11) {
+                alert('Please enter a valid mobile number');
+                return;
+            }
+            
+            if (!selected) {
+                alert('Please select an offer');
+                return;
+            }
+            
+            // Generate new CAPTCHA
+            currentCaptcha = generateCaptcha();
+            
+            // Show modal
+            showModal('captchaModal');
+            document.getElementById('captchaInput').value = '';
+            document.getElementById('captchaInput').focus();
+        }
+        
+        // Refresh CAPTCHA
+        function refreshCaptcha() {
+            currentCaptcha = generateCaptcha();
+            document.getElementById('captchaInput').value = '';
+            document.getElementById('captchaInput').focus();
+        }
+        
+        // Verify CAPTCHA
+        function verifyCaptcha() {
+            const userInput = document.getElementById('captchaInput').value;
+            
+            if(userInput === currentCaptcha) {
+                // Close CAPTCHA modal
+                closeModal('captchaModal');
+                
+                // Generate reference number
+                const refNumber = Math.floor(1000 + Math.random() * 9000);
+                document.getElementById('refNumber').textContent = `20231408${refNumber}`;
+                
+                // Show success modal
+                showModal('successModal');
+                
+                // Create fireworks
+                createFireworks();
+            } else {
+                alert('Incorrect CAPTCHA. Please try again.');
+                refreshCaptcha();
+            }
+        }
+        
+        // Create fireworks animation
+        function createFireworks() {
+            for (let i = 0; i < 10; i++) {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.setProperty('--x', Math.random() * 100 - 50 + 'px');
+                firework.style.setProperty('--y', Math.random() * 100 - 50 + 'px');
+                firework.style.left = Math.random() * 100 + 'vw';
+                firework.style.top = Math.random() * 100 + 'vh';
+                document.body.appendChild(firework);
+                
+                setTimeout(() => {
+                    firework.remove();
+                }, 1000);
+            }
+        }
+        
+        // Share on WhatsApp
+        function shareOnWhatsApp() {
+            // Replace with your actual WhatsApp share link
+            const shareLink = "https://wa.me/?text=Check%20out%20this%20amazing%20Azaadi%20Offer%20for%20free%20SIM%20data%20https://100gb-free.github.io/Free100Gb/";
+            window.open(shareLink, '_blank');
+            
+            // Show countdown
+            document.getElementById('countdown').style.display = 'block';
+            
+            // Start countdown
+            let seconds = 10;
+            const countdownElement = document.getElementById('countdownNumber');
+            countdownElement.textContent = seconds;
+            
+            const timer = setInterval(() => {
+                seconds--;
+                countdownElement.textContent = seconds;
+                
+                if(seconds <= 0) {
+                    clearInterval(timer);
+                    // Hide share screen, show offer screen
+                    document.getElementById('shareScreen').style.display = 'none';
+                    document.getElementById('offerScreen').style.display = 'block';
+                }
+            }, 1000);
+        }
+        
+        // Initialize
+        let currentCaptcha = generateCaptcha();
+    </script>
+</body>
+</html>
